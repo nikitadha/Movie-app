@@ -1,0 +1,29 @@
+import { useState } from "react";
+
+const MovieCard = ({ movie }) => {
+  const [details, setDetails] = useState(null);
+
+  const fetchDetails = async () => {
+    const response = await fetch(
+      `https://www.omdbapi.com/?i=${movie.imdbID}&apikey=YOUR_OMDB_API_KEY`
+    );
+    const data = await response.json();
+    setDetails(data);
+  };
+
+  return (
+    <div className="movie-card" onClick={fetchDetails}>
+      <img src={movie.Poster} alt={movie.Title} />
+      <h3>{movie.Title} ({movie.Year})</h3>
+
+      {details && (
+        <div className="details">
+          <p>{details.Plot}</p>
+          <p><strong>Actors:</strong> {details.Actors}</p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default MovieCard;
